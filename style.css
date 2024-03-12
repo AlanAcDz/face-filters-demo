@@ -1,0 +1,39 @@
+body {
+    font-family: helvetica, arial, sans-serif;
+    margin: 2em;
+    color: #3d3d3d;
+}
+
+section {
+    opacity: 1;
+    transition: opacity 500ms ease-in-out;
+}
+
+video {
+    display: block;
+}
+
+button {
+    position: relative;
+    z-index: 10;
+}
+
+.removed {
+    display: none;
+}
+
+.invisible {
+    opacity: 0.2;
+}
+
+.webcam {
+    position: relative;
+}
+
+.webcam canvas.overlay {
+    /* opacity: 1; */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
