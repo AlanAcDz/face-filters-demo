@@ -2,16 +2,14 @@ import '@tensorflow/tfjs-core'
 import '@tensorflow/tfjs-backend-webgl'
 import * as bodySegmentation from '@tensorflow-models/body-segmentation'
 import '@mediapipe/selfie_segmentation'
+import { drawMask } from './masks'
 import './style.css'
 
 const video = document.getElementById('webcam')
 const liveView = document.getElementById('liveView')
 const demosSection = document.getElementById('demos')
-const webcamCanvas = document.createElement('canvas')
-const ctx = webcamCanvas.getContext('2d')
 const enableWebcamButton = document.getElementById('webcamButton')
-const backgroundImage = new Image(640, 480)
-backgroundImage.src = 'background.jpg'
+const webcamCanvas = document.createElement('canvas')
 
 // Let's load the model with our parameters defined above.
 // Before we can use bodypix class we must wait for it to finish
@@ -52,27 +50,17 @@ async function predictWebcam() {
         const mask = await bodySegmentation.toBinaryMask(
             segmentation,
             { r: 0, g: 0, b: 0, a: 0 },
-            { r: 0, g: 0, b: 0, a: 255 },
+            { r: 255, g: 255, b: 255, a: 255 },
             false,
             0.65
         )
-        ctx.putImageData(mask, 0, 0)
-        ctx.globalCompositeOperation = 'source-in'
-        ctx.drawImage(backgroundImage, 0, 0, webcamCanvas.width, webcamCanvas.height)
-        ctx.globalCompositeOperation = 'destination-over'
-        ctx.drawImage(video, 0, 0, webcamCanvas.width, webcamCanvas.height)
-        ctx.globalCompositeOperation = 'source-over'
-        // const opacity = 1
-        // const maskBlurAmount = 5
-        // const flipHorizontal = false
-        // bodySegmentation.drawMask(
-        //     webcamCanvas,
-        //     backgroundImage,
-        //     bgMask,
-        //     opacity,
-        //     maskBlurAmount,
-        //     flipHorizontal
-        // )
+        drawMask({
+            canvas: webcamCanvas,
+            image: video,
+            maskImage: mask,
+            maskOpacity: 1,
+            maskBlurAmount: 3,
+        })
         previousSegmentationComplete = true
     }
 
