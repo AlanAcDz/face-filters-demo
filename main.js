@@ -1,7 +1,7 @@
 import '@tensorflow/tfjs-core'
 import '@tensorflow/tfjs-backend-webgl'
 import * as bodySegmentation from '@tensorflow-models/body-segmentation'
-import * as mpSelfieSegmentation from '@mediapipe/selfie_segmentation'
+import '@mediapipe/selfie_segmentation'
 import './style.css'
 
 const video = document.getElementById('webcam')
@@ -24,7 +24,7 @@ model = bodySegmentation
     .createSegmenter(bodySegmentation.SupportedModels.MediaPipeSelfieSegmentation, {
         runtime: 'mediapipe',
         modelType: 'general',
-        solutionPath: `https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation@${mpSelfieSegmentation.VERSION}`,
+        solutionPath: `https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation@0.1.1675465747`,
     })
     .then((loadedModel) => {
         model = loadedModel
