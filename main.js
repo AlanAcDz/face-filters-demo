@@ -48,17 +48,13 @@ async function predictWebcam() {
         // Now classify the canvas image we have available.
         const segmentation = await model.segmentPeople(video, {
             flipHorizontal: false,
-            segmentationThreshold: 0.7,
-            internalResolution: 'medium',
-            scoreThreshold: 0.2,
-            nmsRadius: 20,
-            minKeypointScore: 0.3,
-            refineSteps: 10,
         })
         const mask = await bodySegmentation.toBinaryMask(
             segmentation,
             { r: 0, g: 0, b: 0, a: 0 },
-            { r: 0, g: 0, b: 0, a: 255 }
+            { r: 0, g: 0, b: 0, a: 255 },
+            false,
+            0.65
         )
         ctx.putImageData(mask, 0, 0)
         ctx.globalCompositeOperation = 'source-in'
