@@ -66,7 +66,7 @@ const webcamCanvas = document.createElement('canvas')
                 image: video,
                 maskImage: mask,
                 maskOpacity: 1,
-                maskBlurAmount: 2,
+                maskBlurAmount: 2.5,
             })
             const faces = await faceModel.estimateFaces(video, { flipHorizontal: false })
             await trackFace(webcamCanvas, faces)
