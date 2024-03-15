@@ -5,6 +5,7 @@ import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detec
 import '@mediapipe/selfie_segmentation'
 import '@mediapipe/face_mesh'
 import { drawMask } from './masks'
+import { setupScene, trackFace } from './three'
 import './style.css'
 
 const video = document.getElementById('webcam')
@@ -67,6 +68,8 @@ const webcamCanvas = document.createElement('canvas')
                 maskOpacity: 1,
                 maskBlurAmount: 2,
             })
+            const faces = await faceModel.estimateFaces(video, { flipHorizontal: false })
+            await trackFace(webcamCanvas, faces)
             previousSegmentationComplete = true
         }
 
@@ -85,12 +88,13 @@ const webcamCanvas = document.createElement('canvas')
 
         // Activate the webcam stream.
         const stream = await navigator.mediaDevices.getUserMedia({ video: true })
-        video.addEventListener('loadedmetadata', () => {
+        video.addEventListener('loadedmetadata', async () => {
             // Update widths and heights once video is successfully played otherwise
             // it will have width and height of zero initially causing classification
             // to fail.
             webcamCanvas.width = video.videoWidth
             webcamCanvas.height = video.videoHeight
+            // await setupScene(video)
         })
         video.srcObject = stream
         video.addEventListener('loadeddata', predictWebcam)
